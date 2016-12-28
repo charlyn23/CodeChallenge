@@ -13,7 +13,6 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_above="@+id/week"
         android:id="@+id/today"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
@@ -25,144 +24,212 @@
             android:background="@drawable/toggle"
             android:layout_gravity="right"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/blurb"
+            android:textAlignment="center"
+            android:fontFamily="sans-serif-thin"
+            />
+
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:id="@+id/dayZeroImage"
             android:layout_gravity="center"
-            android:layout_marginTop="50dp"/>
+            android:layout_marginTop="30dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dayZeroMaxTemp"
+            android:textSize="70sp"
+            android:textAlignment="center"
+            android:fontFamily="sans-serif-thin"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/dayZeroMinTemp"
-            android:textSize="50sp"
-            android:textAlignment="center"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/dayZeroMaxTemp"
-            android:textSize="50sp"
-            android:textAlignment="center"/>
+            android:textSize="30sp"
+            android:textAlignment="center"
+            android:fontFamily="sans-serif-thin"/>
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/week">
+        android:id="@+id/week"
+        android:layout_alignParentBottom="true"
+        android:weightSum="6"
+        android:layout_below="@+id/today"
+        android:paddingTop="20dp">
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:id="@+id/dayOne">
+            android:id="@+id/dayOne"
+            android:layout_weight="1">
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:id="@+id/dayOneImage"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/dayOneMinTemp"/>
+                android:id="@+id/dayOneMaxTemp"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:fontFamily="sans-serif-thin"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/dayOneMaxTemp"/>
+                android:id="@+id/dayOneMinTemp"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-thin"/>
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:id="@+id/dayTwo">
+            android:id="@+id/dayTwo"
+            android:layout_weight="1">
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/dayTwoImage"/>
+                android:layout_width="60dp"
+                android:id="@+id/dayTwoImage"
+                android:layout_height="60dp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/dayTwoMinTemp"/>
+                android:id="@+id/dayTwoMaxTemp"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:fontFamily="sans-serif-thin"/>
+
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/dayTwoMaxTemp"/>
+                android:id="@+id/dayTwoMinTemp"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-thin"/>
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:id="@+id/dayThree">
+            android:id="@+id/dayThree"
+            android:weightSum="1"
+            android:layout_width="0dp"
+            android:layout_weight="1">
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/dayThreeImage"/>
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/dayThreeImage"
+                />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/dayThreeMinTemp"/>
+                android:id="@+id/dayThreeMaxTemp"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:fontFamily="sans-serif-thin"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/dayThreeMaxTemp"/>
+                android:id="@+id/dayThreeMinTemp"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-thin"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:id="@+id/dayFour">
+            android:id="@+id/dayFour"
+            android:layout_width="0dp"
+            android:layout_weight="1">
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/dayFourImage"/>
+                android:layout_width="60dp"
+                android:id="@+id/dayFourImage"
+                android:layout_height="60dp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/dayFourMinTemp"/>
+                android:id="@+id/dayFourMaxTemp"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:fontFamily="sans-serif-thin"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/dayFourMaxTemp"/>
+                android:id="@+id/dayFourMinTemp"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-thin"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:id="@+id/dayFive">
+            android:id="@+id/dayFive"
+            android:layout_weight="1">
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:id="@+id/dayFiveImage"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/dayFiveMinTemp"/>
+                android:id="@+id/dayFiveMaxTemp"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:fontFamily="sans-serif-thin"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/dayFiveMaxTemp"/>
+                android:id="@+id/dayFiveMinTemp"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-thin"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:id="@+id/daySix">
+            android:id="@+id/daySix"
+            android:layout_weight="1" >
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:id="@+id/daySixImage"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/daySixMinTemp"/>
+                android:id="@+id/daySixMaxTemp"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:fontFamily="sans-serif-thin"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/daySixMaxTemp"/>
+                android:id="@+id/daySixMinTemp"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-thin"/>
         </LinearLayout>
     </LinearLayout>
 

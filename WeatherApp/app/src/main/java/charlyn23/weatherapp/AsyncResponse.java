@@ -5,7 +5,7 @@ package charlyn23.weatherapp;
  */
 
 //This interface will allow me to pass the data obtained by the AsyncTask to the MainActivity
-    //to update the UI.
+//to update the UI.
 public  interface AsyncResponse {
     void processFinish(String output);
 

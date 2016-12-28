@@ -11,11 +11,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     int MY_PERMISSIONS_REQUEST_INTERNET;
     public  String CLIENT_ID;
     public  String SECRET_KEY;
+    public TextView blurb;
     public  TextView dayZeroMinTextView;
     public TextView dayZeroMaxTextView;
     public  TextView dayOneMinTextView;
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     public ImageView dayFourImage;
     public ImageView dayFiveImage;
     public ImageView daySixImage;
-    public boolean farenheit = true;
+    public boolean farenheit;
 
 
     public static final String TAG = "MainActivity";
@@ -59,7 +62,10 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         dataFetcher.execute();
         CLIENT_ID = getString(R.string.id);
         SECRET_KEY = getString(R.string.key);
+        farenheit = true;
 
+
+        //TODO: fix this logic gate. app crashes when button is pressed twice.
         tempScale = (Button)findViewById(R.id.tempScaleButton);
         tempScale.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,12 +74,14 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                     setToCelisius();
                     farenheit = false;
                 }
-                else {
+                else  {
                     setToFarenheit();
                     farenheit = true;
                 }
+
             }
         });
+        blurb = (TextView)findViewById(R.id.blurb);
         dayZeroImage = (ImageView)findViewById(R.id.dayZeroImage);
         dayZeroMaxTextView = (TextView)findViewById(R.id.dayZeroMaxTemp);
         dayZeroMinTextView = (TextView)findViewById(R.id.dayZeroMinTemp);
@@ -109,12 +117,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             e.printStackTrace();
         }
     }
-    int dayOneMaxF;
-    int dayOneMinF;
-    int dayOneMaxC;
-    int dayOneMinC;
-    String dayOneWeatherPrimaryCoded;
-    String dayOneDate;
+
 
     int dayZeroMinF;
     int dayZeroMaxF;
@@ -122,6 +125,14 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     int dayZeroMaxC;
     String dayZeroWeatherPrimaryCoded;
     String dayZeroDate;
+    String dayZeroBlurb;
+
+    int dayOneMaxF;
+    int dayOneMinF;
+    int dayOneMaxC;
+    int dayOneMinC;
+    String dayOneWeatherPrimaryCoded;
+    String dayOneDate;
 
     String dayTwoDate;
     String dayTwoWeatherPrimaryCoded;
@@ -160,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     String daySixWeatherPrimaryCoded;
 
 
-    //Update UI once AsyncTask has fetched data
+    //Get weather endpoints and update UI once AsyncTask has fetched data
     @Override
     public void processFinish(String output)  {
         System.out.println("processFinish " + output);
@@ -177,9 +188,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             dayZeroMaxC = dayZero.getInt("maxTempC");
             dayZeroMinC = dayZero.getInt("minTempC");
             dayZeroWeatherPrimaryCoded = dayZero.getString("weatherPrimaryCoded");
-            if (dayZeroWeatherPrimaryCoded.contains("R")){
-                dayZeroImage.setBackground(getResources().getDrawable(R.drawable.raining));
-            }
+            dayZeroBlurb = dayZero.getString("weather");
+            blurb.setText(dayZeroBlurb);
             dayZeroMinTextView.setText(String.valueOf(dayZeroMinF + "°"));
             dayZeroMaxTextView.setText(String.valueOf(dayZeroMaxF + "°"));
 
@@ -242,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             daySixWeatherPrimaryCoded = daySix.getString("weatherPrimaryCoded");
             daySixMinTextView.setText(String.valueOf(daySixMinF + "°"));
             daySixMaxTextView.setText(String.valueOf(daySixMaxF + "°"));
+            setImages();
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -279,6 +290,51 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         dayFiveMinTextView.setText(dayFiveMinF);
         daySixMaxTextView.setText(daySixMaxF);
         daySixMinTextView.setText(daySixMinF);
+    }
+
+    public void setImages(){
+        //HashMap creates weatherCode + ImageView key value pairs that I can iterate through and populate
+        //ImageViews according to its weatherCode
+        HashMap<String, ImageView> weatherByDay = new HashMap<>();
+        weatherByDay.put(dayZeroWeatherPrimaryCoded, dayZeroImage);
+        weatherByDay.put(dayOneWeatherPrimaryCoded, dayOneImage);
+        weatherByDay.put(dayTwoWeatherPrimaryCoded, dayTwoImage);
+        weatherByDay.put(dayThreeWeatherPrimaryCoded, dayThreeImage);
+        weatherByDay.put(dayFourWeatherPrimaryCoded, dayFourImage);
+        weatherByDay.put(dayFiveWeatherPrimaryCoded, dayFiveImage);
+        weatherByDay.put(daySixWeatherPrimaryCoded, daySixImage);
+
+        //First, we'll look for a few specific weather codes to update UI.
+        for (String code : weatherByDay.keySet()){
+            if (code.endsWith(":R") | code.endsWith(":RW")) {
+                weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.raining));
+            }
+            else if (code.endsWith(":S") | code.contains(":SI") | code.contains("BS")){
+                weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.snowing));
+            }
+            else if (code.endsWith(":A")){
+                weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.hail));
+            }
+            else if (code.contains("T")){
+                weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.bolt));
+            }
+            else if (code.endsWith("WM") | code.endsWith("RS") | code.contains("SW")){
+                weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.rainsnow));
+            }
+            //If no weather code is found, use cloud coverage code, per Aeris API
+            else if (code.endsWith("CL") | code.endsWith("FW")){
+                    weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.sunny));
+            }
+            else if (code.endsWith("SC") | code.endsWith("BK")){
+                    weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.partly_cloudy));
+            }
+            else if (code.contains("OV")){
+                    weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.very_cloudy));
+            }
+            else if (code.contains("IC") | code.contains("FR")){
+                weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.icicle));
+            }
+        }
     }
 
 }
