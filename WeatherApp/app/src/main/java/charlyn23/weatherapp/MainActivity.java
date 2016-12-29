@@ -18,29 +18,26 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
-    int MY_PERMISSIONS_REQUEST_INTERNET;
-    public  String CLIENT_ID;
-    public  String SECRET_KEY;
     public TextView blurb;
     public TextView dayZeroDateTextView;
-    public  TextView dayZeroMinTextView;
+    public TextView dayZeroMinTextView;
     public TextView dayZeroMaxTextView;
-    public  TextView dayOneMinTextView;
+    public TextView dayOneMinTextView;
     public TextView dayOneMaxTextView;
     public TextView dayOneDay;
-    public  TextView dayTwoMinTextView;
+    public TextView dayTwoMinTextView;
     public TextView dayTwoMaxTextView;
     public TextView dayTwoDay;
-    public  TextView dayThreeMinTextView;
+    public TextView dayThreeMinTextView;
     public TextView dayThreeMaxTextView;
     public TextView dayThreeDay;
-    public  TextView dayFourMinTextView;
+    public TextView dayFourMinTextView;
     public TextView dayFourMaxTextView;
     public TextView dayFourDay;
-    public  TextView dayFiveMinTextView;
+    public TextView dayFiveMinTextView;
     public TextView dayFiveMaxTextView;
     public TextView dayFiveDay;
-    public  TextView daySixMinTextView;
+    public TextView daySixMinTextView;
     public TextView daySixMaxTextView;
     public TextView daySixDay;
     public Button tempScale;
@@ -53,9 +50,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     public ImageView daySixImage;
     public boolean farenheit;
     public String todayString;
-    public static ArrayList<TextView> textViewArrayList;
-    public static ArrayList<String> daysOfTheWeek;
-
 
     public static final String TAG = "MainActivity";
     DataFetcher dataFetcher = new DataFetcher();
@@ -73,8 +67,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         dataFetcher = new DataFetcher();
         dataFetcher.listener = this;
         dataFetcher.execute();
-        CLIENT_ID = getString(R.string.id);
-        SECRET_KEY = getString(R.string.key);
         farenheit = true;
 
         //TODO: fix this logic gate. app crashes when button is pressed twice.
@@ -85,11 +77,12 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                 if (farenheit) {
                     setToCelisius();
                     farenheit = false;
+                    tempScale.setBackgroundResource(R.drawable.button_pressed);
                 } else {
-                    setToFarenheit();
                     farenheit = true;
+                    tempScale.setBackgroundResource(R.drawable.button_default);
+                    setToFarenheit();
                 }
-
             }
         });
         blurb = (TextView) findViewById(R.id.blurb);
@@ -129,9 +122,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         daySixDay = (TextView) findViewById(R.id.daySixDay);
 
 
-
-    //Calendar.getDay() is deprecated. I created the following algorithm as a workaround.
-    Calendar calendar = Calendar.getInstance();
+        //Calendar.getDay() is deprecated. I created the following algorithm as a workaround.
+        Calendar calendar = Calendar.getInstance();
         int today = calendar.get(Calendar.DAY_OF_WEEK);
 
         Log.i("Today", String.valueOf(today));
@@ -181,12 +173,12 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     int dayZeroMinF;
-    int dayZeroMaxF;
-    int dayZeroMinC;
-    int dayZeroMaxC;
-    String dayZeroWeatherPrimaryCoded;
-    String dayZeroDate;
-    String dayZeroBlurb;
+    public static int dayZeroMaxF;
+    public static int dayZeroMinC;
+    public static int dayZeroMaxC;
+    public static String dayZeroWeatherPrimaryCoded;
+    public static String dayZeroDate;
+    public static String dayZeroBlurb;
 
     int dayOneMaxF;
     int dayOneMinF;
@@ -339,20 +331,20 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     public void setToFarenheit() {
-        dayZeroMaxTextView.setText(dayZeroMaxF);
-        dayZeroMinTextView.setText(dayZeroMinF);
-        dayOneMaxTextView.setText(dayOneMaxF);
-        dayOneMinTextView.setText(dayOneMinF);
-        dayTwoMaxTextView.setText(dayTwoMaxF);
-        dayTwoMinTextView.setText(dayTwoMinF);
-        dayThreeMaxTextView.setText(dayThreeMaxF);
-        dayThreeMinTextView.setText(dayThreeMinF);
-        dayFourMaxTextView.setText(dayFourMaxF);
-        dayFourMinTextView.setText(dayFourMinF);
-        dayFiveMaxTextView.setText(dayFiveMaxF);
-        dayFiveMinTextView.setText(dayFiveMinF);
-        daySixMaxTextView.setText(daySixMaxF);
-        daySixMinTextView.setText(daySixMinF);
+        dayZeroMaxTextView.setText(String.valueOf(dayZeroMaxF + "°"));
+        dayZeroMinTextView.setText(String.valueOf(dayZeroMinF + "°"));
+        dayOneMaxTextView.setText(String.valueOf(dayOneMaxF + "°"));
+        dayOneMinTextView.setText(String.valueOf(dayOneMinF + "°"));
+        dayTwoMaxTextView.setText(String.valueOf(dayTwoMaxF + "°"));
+        dayTwoMinTextView.setText(String.valueOf(dayTwoMinF + "°"));
+        dayThreeMaxTextView.setText(String.valueOf(dayThreeMaxF + "°"));
+        dayThreeMinTextView.setText(String.valueOf(dayThreeMinF + "°"));
+        dayFourMaxTextView.setText(String.valueOf(dayFourMaxF + "°"));
+        dayFourMinTextView.setText(String.valueOf(dayFourMinF + "°"));
+        dayFiveMaxTextView.setText(String.valueOf(dayFiveMaxF + "°"));
+        dayFiveMinTextView.setText(String.valueOf(dayFiveMinF + "°"));
+        daySixMaxTextView.setText(String.valueOf(daySixMaxF + "°"));
+        daySixMinTextView.setText(String.valueOf(daySixMinF + "°"));
     }
 
     public void setImages(){
@@ -370,35 +362,36 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         //First, we'll look for a few specific weather codes to update UI.
         for (String code : weatherByDay.keySet()){
             if (code.endsWith(":R") | code.endsWith(":RW")) {
-                weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.raining));
+                weatherByDay.get(code).setBackgroundResource(R.drawable.raining);
             }
             else if (code.endsWith(":S") | code.contains(":SI") | code.contains("BS")){
-                weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.snowing));
+                weatherByDay.get(code).setBackgroundResource(R.drawable.snowing);
             }
             else if (code.endsWith(":A")){
-                weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.hail));
+                weatherByDay.get(code).setBackgroundResource(R.drawable.hail);
             }
             else if (code.contains("T")){
-                weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.bolt));
+                weatherByDay.get(code).setBackgroundResource(R.drawable.bolt);
             }
             else if (code.endsWith("WM") | code.endsWith("RS") | code.contains("SW")){
-                weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.rainsnow));
+                weatherByDay.get(code).setBackgroundResource(R.drawable.rainsnow);
             }
             //If no weather code is found, use cloud coverage code, per Aeris API
             else if (code.endsWith("CL") | code.endsWith("FW")){
-                    weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.sunny));
+                    weatherByDay.get(code).setBackgroundResource(R.drawable.sunny);
             }
-            else if (code.equals("::SC") | code.endsWith("BK")){
-                    weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.partly_cloudy));
+            else if (code.endsWith(":SC") | code.endsWith("BK")){
+                    weatherByDay.get(code).setBackgroundResource(R.drawable.partly_cloudy);
             }
             else if (code.contains("OV")){
-                    weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.very_cloudy));
+                    weatherByDay.get(code).setBackgroundResource(R.drawable.very_cloudy);
             }
             else if (code.contains("IC") | code.contains("FR")){
-                weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.icicle));
+                weatherByDay.get(code).setBackgroundResource(R.drawable.icicle);
             }
         }
     }
-
-
 }
+
+
+

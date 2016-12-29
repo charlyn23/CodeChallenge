@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">WeatherApp</string>
-    <string name="id">@string/access_id</string>
-    <string name="key">@string/secret_key</string>
     <string name="permission_rationale">Allow internet connection to create a profile and unlock added features!</string>
     <string name="ok">OK</string>
 </resources>
