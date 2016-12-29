@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         dataFetcher.execute();
         farenheit = true;
 
-        //TODO: fix this logic gate. app crashes when button is pressed twice.
         tempScale = (Button) findViewById(R.id.tempScaleButton);
         tempScale.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,12 +172,12 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     int dayZeroMinF;
-    public static int dayZeroMaxF;
-    public static int dayZeroMinC;
-    public static int dayZeroMaxC;
-    public static String dayZeroWeatherPrimaryCoded;
-    public static String dayZeroDate;
-    public static String dayZeroBlurb;
+    int dayZeroMaxF;
+    int dayZeroMinC;
+    int dayZeroMaxC;
+    String dayZeroWeatherPrimaryCoded;
+    String dayZeroDate;
+    String dayZeroBlurb;
 
     int dayOneMaxF;
     int dayOneMinF;
@@ -373,14 +372,14 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             else if (code.contains("T")){
                 weatherByDay.get(code).setBackgroundResource(R.drawable.bolt);
             }
-            else if (code.endsWith("WM") | code.endsWith("RS") | code.contains("SW")){
+            else if (code.contains("WM") | code.endsWith("RS") | code.contains("SW")){
                 weatherByDay.get(code).setBackgroundResource(R.drawable.rainsnow);
             }
             //If no weather code is found, use cloud coverage code, per Aeris API
             else if (code.endsWith("CL") | code.endsWith("FW")){
                     weatherByDay.get(code).setBackgroundResource(R.drawable.sunny);
             }
-            else if (code.endsWith(":SC") | code.endsWith("BK")){
+            else if (code.endsWith("SC") | code.endsWith("BK")){
                     weatherByDay.get(code).setBackgroundResource(R.drawable.partly_cloudy);
             }
             else if (code.contains("OV")){
