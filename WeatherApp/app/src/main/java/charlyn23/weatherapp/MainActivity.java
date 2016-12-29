@@ -2,6 +2,7 @@ package charlyn23.weatherapp;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -11,6 +12,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
@@ -19,20 +22,27 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     public  String CLIENT_ID;
     public  String SECRET_KEY;
     public TextView blurb;
+    public TextView dayZeroDateTextView;
     public  TextView dayZeroMinTextView;
     public TextView dayZeroMaxTextView;
     public  TextView dayOneMinTextView;
     public TextView dayOneMaxTextView;
+    public TextView dayOneDay;
     public  TextView dayTwoMinTextView;
     public TextView dayTwoMaxTextView;
+    public TextView dayTwoDay;
     public  TextView dayThreeMinTextView;
     public TextView dayThreeMaxTextView;
+    public TextView dayThreeDay;
     public  TextView dayFourMinTextView;
     public TextView dayFourMaxTextView;
+    public TextView dayFourDay;
     public  TextView dayFiveMinTextView;
     public TextView dayFiveMaxTextView;
+    public TextView dayFiveDay;
     public  TextView daySixMinTextView;
     public TextView daySixMaxTextView;
+    public TextView daySixDay;
     public Button tempScale;
     public ImageView dayZeroImage;
     public ImageView dayOneImage;
@@ -42,6 +52,9 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     public ImageView dayFiveImage;
     public ImageView daySixImage;
     public boolean farenheit;
+    public String todayString;
+    public static ArrayList<TextView> textViewArrayList;
+    public static ArrayList<String> daysOfTheWeek;
 
 
     public static final String TAG = "MainActivity";
@@ -64,51 +77,100 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         SECRET_KEY = getString(R.string.key);
         farenheit = true;
 
-
         //TODO: fix this logic gate. app crashes when button is pressed twice.
-        tempScale = (Button)findViewById(R.id.tempScaleButton);
+        tempScale = (Button) findViewById(R.id.tempScaleButton);
         tempScale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (farenheit) {
                     setToCelisius();
                     farenheit = false;
-                }
-                else  {
+                } else {
                     setToFarenheit();
                     farenheit = true;
                 }
 
             }
         });
-        blurb = (TextView)findViewById(R.id.blurb);
-        dayZeroImage = (ImageView)findViewById(R.id.dayZeroImage);
-        dayZeroMaxTextView = (TextView)findViewById(R.id.dayZeroMaxTemp);
-        dayZeroMinTextView = (TextView)findViewById(R.id.dayZeroMinTemp);
+        blurb = (TextView) findViewById(R.id.blurb);
+        dayZeroDateTextView = (TextView) findViewById(R.id.dayZeroDate);
+        dayZeroImage = (ImageView) findViewById(R.id.dayZeroImage);
+        dayZeroMaxTextView = (TextView) findViewById(R.id.dayZeroMaxTemp);
+        dayZeroMinTextView = (TextView) findViewById(R.id.dayZeroMinTemp);
 
-        dayOneImage = (ImageView)findViewById(R.id.dayOneImage);
-        dayOneMinTextView = (TextView)findViewById(R.id.dayOneMinTemp);
-        dayOneMaxTextView = (TextView)findViewById(R.id.dayOneMaxTemp);
+        dayOneImage = (ImageView) findViewById(R.id.dayOneImage);
+        dayOneMinTextView = (TextView) findViewById(R.id.dayOneMinTemp);
+        dayOneMaxTextView = (TextView) findViewById(R.id.dayOneMaxTemp);
+        dayOneDay = (TextView) findViewById(R.id.dayOneDay);
 
-        dayTwoImage = (ImageView)findViewById(R.id.dayTwoImage);
+        dayTwoImage = (ImageView) findViewById(R.id.dayTwoImage);
         dayTwoMinTextView = (TextView) findViewById(R.id.dayTwoMinTemp);
         dayTwoMaxTextView = (TextView) findViewById(R.id.dayTwoMaxTemp);
+        dayTwoDay = (TextView) findViewById(R.id.dayTwoDay);
 
-        dayThreeImage = (ImageView)findViewById(R.id.dayThreeImage);
+        dayThreeImage = (ImageView) findViewById(R.id.dayThreeImage);
         dayThreeMinTextView = (TextView) findViewById(R.id.dayThreeMinTemp);
         dayThreeMaxTextView = (TextView) findViewById(R.id.dayThreeMaxTemp);
+        dayThreeDay = (TextView) findViewById(R.id.dayThreeDay);
 
-        dayFourImage = (ImageView)findViewById(R.id.dayFourImage);
+        dayFourImage = (ImageView) findViewById(R.id.dayFourImage);
         dayFourMinTextView = (TextView) findViewById(R.id.dayFourMinTemp);
         dayFourMaxTextView = (TextView) findViewById(R.id.dayFourMaxTemp);
+        dayFourDay = (TextView) findViewById(R.id.dayFourDay);
 
-        dayFiveImage = (ImageView)findViewById(R.id.dayFiveImage);
+        dayFiveImage = (ImageView) findViewById(R.id.dayFiveImage);
         dayFiveMinTextView = (TextView) findViewById(R.id.dayFiveMinTemp);
         dayFiveMaxTextView = (TextView) findViewById(R.id.dayFiveMaxTemp);
+        dayFiveDay = (TextView) findViewById(R.id.dayFiveDay);
 
-        daySixImage = (ImageView)findViewById(R.id.daySixImage);
+        daySixImage = (ImageView) findViewById(R.id.daySixImage);
         daySixMinTextView = (TextView) findViewById(R.id.daySixMinTemp);
         daySixMaxTextView = (TextView) findViewById(R.id.daySixMaxTemp);
+        daySixDay = (TextView) findViewById(R.id.daySixDay);
+
+
+
+    //Calendar.getDay() is deprecated. I created the following algorithm as a workaround.
+    Calendar calendar = Calendar.getInstance();
+        int today = calendar.get(Calendar.DAY_OF_WEEK);
+
+        Log.i("Today", String.valueOf(today));
+        ArrayList<String> week = new ArrayList<>();
+        week.add("foo"); //placeholder so indices and day int are the same
+        week.add("Sun");
+        week.add("Mon");
+        week.add("Tues");
+        week.add("Wed");
+        week.add("Thurs");
+        week.add("Fri");
+        week.add("Sat");
+
+        todayString = week.get(today);
+
+        ArrayList<String> modifiedWeekArrayList = new ArrayList<>();
+        for (int i = today; i < week.size(); i++){
+            modifiedWeekArrayList.add(week.get(i));
+            System.out.println("modWeekArrayList day" + i + " = " + week.get(i));
+        }
+        for (int i = 1; i <= today; i++) {
+            modifiedWeekArrayList.add(week.get(i));
+            System.out.println("modWeekArrayList day" + i + " = " + week.get(i));
+        }
+        ArrayList<TextView> dayTextViews = new ArrayList<>();
+        dayTextViews.add(dayZeroDateTextView);
+        dayTextViews.add(dayOneDay);
+        dayTextViews.add(dayTwoDay);
+        dayTextViews.add(dayThreeDay);
+        dayTextViews.add(dayFourDay);
+        dayTextViews.add(dayFiveDay);
+        dayTextViews.add(daySixDay);
+
+        dayOneDay.setText(modifiedWeekArrayList.get(1));
+        dayTwoDay.setText(modifiedWeekArrayList.get(2));
+        dayThreeDay.setText(modifiedWeekArrayList.get(3));
+        dayFourDay.setText(modifiedWeekArrayList.get(4));
+        dayFiveDay.setText(modifiedWeekArrayList.get(5));
+        daySixDay.setText(modifiedWeekArrayList.get(6));
 
         try {
             dataFetcher.execute();
@@ -117,7 +179,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             e.printStackTrace();
         }
     }
-
 
     int dayZeroMinF;
     int dayZeroMaxF;
@@ -182,7 +243,9 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             JSONArray periods = noNameObject.getJSONArray("periods");
 
             JSONObject dayZero = periods.getJSONObject(0);
-            dayZeroDate = dayZero.getString("dateTimeISO");
+            dayZeroDate = dayZero.getString("dateTimeISO").substring(0, 10);
+            Log.i("day0 ", dayZeroDate);
+            dayZeroDateTextView.setText(todayString + " " + dayZeroDate.substring(5, 7) + "/" + dayZeroDate.substring(8));
             dayZeroMaxF = dayZero.getInt("maxTempF");
             dayZeroMinF = dayZero.getInt("minTempF");
             dayZeroMaxC = dayZero.getInt("maxTempC");
@@ -325,7 +388,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             else if (code.endsWith("CL") | code.endsWith("FW")){
                     weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.sunny));
             }
-            else if (code.endsWith("SC") | code.endsWith("BK")){
+            else if (code.equals("::SC") | code.endsWith("BK")){
                     weatherByDay.get(code).setBackground(getResources().getDrawable(R.drawable.partly_cloudy));
             }
             else if (code.contains("OV")){
@@ -336,5 +399,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             }
         }
     }
+
 
 }
